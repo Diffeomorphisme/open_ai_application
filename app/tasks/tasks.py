@@ -89,5 +89,3 @@ def get_task_list_with_embeddings():
                                        for number in json.loads(embedding)]
                     break
     return task_list
-
-
