@@ -18,7 +18,7 @@ class Weather(Task):
 class WeatherCity(Task):
     def __init__(self):
         super().__init__()
-        self.description = "Get weather data for Gothenburg, Sweden"
+        self.description = "Get weather data for Gothenburg."
         self.embeddings: list[Task] = []
 
     def do_task(self):
@@ -40,7 +40,7 @@ class WeatherCity(Task):
 class BookMeeting(Task):
     def __init__(self):
         super().__init__()
-        self.description = "Book a meeting"
+        self.description = "Book a meeting."
         self.embeddings: list = []
 
     def do_task(self):
@@ -50,7 +50,7 @@ class BookMeeting(Task):
 class CancelMeeting(Task):
     def __init__(self):
         super().__init__()
-        self.description = "Delete a meeting"
+        self.description = "Delete a meeting."
         self.embeddings: list = []
 
     def do_task(self):
@@ -60,7 +60,7 @@ class CancelMeeting(Task):
 class Onboarding(Task):
     def __init__(self):
         super().__init__()
-        self.description = "Help with employee onboarding at QueensLab"
+        self.description = "Help with employee onboarding at QueensLab."
         self.embeddings: list = []
 
     def do_task(self):

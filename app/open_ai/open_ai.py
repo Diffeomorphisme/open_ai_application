@@ -5,6 +5,9 @@ from app.core.config import settings
 from app.tasks.model import Task
 
 
+THRESHOLD = 0.8
+
+
 class AI:
     def __init__(self):
         self._key = settings.OPENAI_APIKEY
@@ -46,7 +49,8 @@ class AI:
             if similarity > maximum:
                 maximum = similarity
                 matching_function = task
-        return matching_function
+        if maximum > THRESHOLD:
+            return matching_function
 
 
 ai = AI()
