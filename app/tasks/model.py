@@ -2,6 +2,6 @@
 class Task:
     def __init__(self):
         self.description = ""
-        self.sub_tasks: list[Task] = []
+        self.embeddings: list = []
 
     def do_task(self): ...

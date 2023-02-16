@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import json
 
 from app.tasks.model import Task
 
@@ -8,16 +9,17 @@ class Weather(Task):
     def __init__(self):
         super().__init__()
         self.description = "Get weather data"
-        self.subtasks: list[Task] = []
+        self.embeddings: list[Task] = []
 
     def do_task(self):
         return "No data to show here"
 
 
-class WeatherGbg(Task):
+class WeatherCity(Task):
     def __init__(self):
         super().__init__()
-        self.description = "Get weather for Gothenburg, Sweden"
+        self.description = "Get weather data for Gothenburg, Sweden"
+        self.embeddings: list[Task] = []
 
     def do_task(self):
         url = "https://www.yr.no/en/forecast/daily-table/2-2711537/Sweden/V" \
@@ -35,18 +37,11 @@ class WeatherGbg(Task):
             return "Could not find your weather data."
 
 
-class Meeting(Task):
-    def __init__(self):
-        super().__init__()
-        self.description = "Interacting with calendar"
-        self.subtasks: list[Task] = []
-
-
 class BookMeeting(Task):
     def __init__(self):
         super().__init__()
         self.description = "Book a meeting"
-        self.subtasks: list[Task] = []
+        self.embeddings: list = []
 
     def do_task(self):
         return "Meeting booked!"
@@ -56,7 +51,7 @@ class CancelMeeting(Task):
     def __init__(self):
         super().__init__()
         self.description = "Delete a meeting"
-        self.subtasks: list[Task] = []
+        self.embeddings: list = []
 
     def do_task(self):
         return "Meeting canceled!"
@@ -66,29 +61,33 @@ class Onboarding(Task):
     def __init__(self):
         super().__init__()
         self.description = "Help with employee onboarding at QueensLab"
+        self.embeddings: list = []
 
     def do_task(self):
         return "Here is all you need to know"
 
 
 weather = Weather()
-meeting = Meeting()
-onboarding = Onboarding()
-
-weather_gbg = WeatherGbg()
-weather.sub_tasks.append(weather_gbg)
-
+weather_city = WeatherCity()
 book_meeting = BookMeeting()
 cancel_meeting = CancelMeeting()
-meeting.sub_tasks.append(book_meeting)
-meeting.sub_tasks.append(cancel_meeting)
-
-task_list = [weather, meeting, onboarding]
+onboarding = Onboarding()
 
 
-if __name__ == "__main__":
-    for task in task_list:
-        print(task.description)
-        # print(task.do_task())
+task_list = [weather, weather_city, book_meeting, cancel_meeting, onboarding]
+descriptions = [task.description for task in task_list]
+embeddings = [task.embeddings for task in task_list]
+
+
+def get_task_list_with_embeddings():
+    with open("app/tasks/embeddings/embeddings.txt", "r") as file:
+        for line in file:
+            [description, embedding] = line.strip().split(";")
+            for task in task_list:
+                if task.description == description:
+                    task.embeddings = [float(number)
+                                       for number in json.loads(embedding)]
+                    break
+    return task_list
 
 
